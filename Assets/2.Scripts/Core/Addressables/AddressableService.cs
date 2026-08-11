@@ -10,11 +10,6 @@ public class AddressableService : IAddressableService
         AsyncOperationHandle handle = Addressables.InitializeAsync();
 
         await handle.Task;
-
-        if ( handle.Status != AsyncOperationStatus.Succeeded )
-        {
-            Debug.Log("어드레서블 서비스 에러!");
-        }
     }
 
     public async Task<T> LoadAssetAsync<T>(string key) where T : Object
@@ -22,12 +17,7 @@ public class AddressableService : IAddressableService
         AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(key);
 
         T asset = await handle.Task;
-
-        if (handle.Status != AsyncOperationStatus.Succeeded)
-        {
-            Debug.Log("어드레서블 서비스 에러!");
-        }
-
+                
         return asset;
     }
 
@@ -36,12 +26,7 @@ public class AddressableService : IAddressableService
         AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(key);
 
         GameObject instance = await handle.Task;
-
-        if (handle.Status != AsyncOperationStatus.Succeeded)
-        {
-            Debug.Log("어드레서블 서비스 에러!");
-        }
-
+                
         return instance;
     }    
 
@@ -64,12 +49,5 @@ public class AddressableService : IAddressableService
 
         Addressables.ReleaseInstance(instance);
     }
-
-    /*private void StatusCheck(AsyncOperationStatus status)
-    {
-        if (status != AsyncOperationStatus.Succeeded)
-        {
-            Debug.Log("어드레서블 서비스 에러!");
-        }
-    }*/
+    
 }
