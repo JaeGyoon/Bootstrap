@@ -9,5 +9,7 @@ public class Bootstrap : MonoBehaviour
         await gameCompositionRoot.InitializeAsync();
 
         Debug.Log("부트 스트랩 이니셜 종료");
+
+        await gameCompositionRoot.LoadInitialSceneAsync();
     }
 }
