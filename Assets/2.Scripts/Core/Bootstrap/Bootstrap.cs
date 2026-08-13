@@ -1,15 +1,11 @@
 ﻿using UnityEngine;
 
 public class Bootstrap : MonoBehaviour
-{
+{    
     private async void Start()
     {
-        GameCompositionRoot gameCompositionRoot = new GameCompositionRoot();
+        GameStartup gameStartup = new GameStartup();
 
-        await gameCompositionRoot.InitializeAsync();
-
-        Debug.Log("부트 스트랩 이니셜 종료");
-
-        await gameCompositionRoot.LoadInitialSceneAsync();
+        await gameStartup.StartAsync();
     }
 }

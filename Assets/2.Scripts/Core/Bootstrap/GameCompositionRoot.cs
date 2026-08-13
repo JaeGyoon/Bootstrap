@@ -7,11 +7,13 @@ public sealed class GameCompositionRoot
     private ISaveService saveService;
     private ISceneLoader sceneLoader;
 
-    public async Task InitializeAsync()
+    public async Task<GameService> InitializeAsync()
     {
         CreateServiceAsync();
 
         await InitializeServiceAsync();
+
+        return new GameService(addressableService, saveService, sceneLoader);
     }
 
     private void CreateServiceAsync()
