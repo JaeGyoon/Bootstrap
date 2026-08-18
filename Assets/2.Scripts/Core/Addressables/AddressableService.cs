@@ -26,7 +26,9 @@ public class AddressableService : IAddressableService
         AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(key);
 
         GameObject instance = await handle.Task;
-                
+
+        Debug.Log($"어드레서블 오브젝트 생성 : {instance.name}");
+
         return instance;
     }    
 

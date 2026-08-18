@@ -25,7 +25,7 @@ public sealed class GameStartup
 
         LobbyCompositionRoot lobbyCompositionRoot = new LobbyCompositionRoot(gameService);
 
-        lobbyCompositionRoot.Initialize();
+        await lobbyCompositionRoot.InitializeAsync();
 
         Debug.Log("씬 이동 후 lobby Root 설정 완료");
     }
