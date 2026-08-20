@@ -15,9 +15,13 @@ public sealed class LobbyController
     {
         lobbyView.Show();
 
-        lobbyView.SetHeroName("No Hero");
-        lobbyView.SetStageName("No Stage");
+        LoadState();
 
+        BindButtons();
+    }
+
+    private void BindButtons()
+    {
         lobbyView.SetGameStartBtnAction(OnGameStartBtnClicked);
         lobbyView.SetHeroSelectBtnAction(OnHeroSelectBtnClicked);
         lobbyView.SetStageSelectBtnAction(OnStageSelectBtnClicked);
@@ -36,5 +40,13 @@ public sealed class LobbyController
     private void OnStageSelectBtnClicked()
     {
 
+    }
+
+    private void LoadState()
+    {
+        PlayerSaveData playerSaveData = gameService.SaveService.CurrentSaveData;
+
+        lobbyView.SetHeroName(playerSaveData.selectedHeroID);
+        lobbyView.SetStageName(playerSaveData.selectedStageID);
     }
 }

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public interface ISaveService
 {
+    PlayerSaveData CurrentSaveData { get; }
+
     Task InitializeAsync();
 
     PlayerSaveData GetData();

@@ -6,9 +6,12 @@ public class JsonSaveService : ISaveService
 {
     private const string FileName = "player_save.json";
 
-    private PlayerSaveData currentSaveData;
+    private string SavePath => Path.Combine(Application.persistentDataPath, FileName);
 
-    private string SavePath => Path.Combine(Application.persistentDataPath,FileName);
+    private bool isDirty;
+
+    private PlayerSaveData currentSaveData;  
+    public PlayerSaveData CurrentSaveData => currentSaveData;
 
     public async Task InitializeAsync()
     {
@@ -19,6 +22,8 @@ public class JsonSaveService : ISaveService
         else
         {
             currentSaveData = CreateDefaultSaveData();
+
+            isDirty = true;
         }
     }
 
@@ -45,8 +50,20 @@ public class JsonSaveService : ISaveService
 
     public async Task SaveAsync()
     {
+        if ( isDirty == false )
+        {
+            return;
+        }
+
         string json = JsonUtility.ToJson(currentSaveData, true);
 
         await File.WriteAllTextAsync(SavePath, json);
+
+        isDirty = false;
+    }
+
+    public void MarkDirty()
+    {
+        isDirty = true;
     }
 }
