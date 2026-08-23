@@ -1,21 +1,27 @@
-﻿using UnityEngine;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 
 public sealed class LobbyController
 {
     private readonly GameService gameService;
-    private readonly ILobbyView lobbyView;
 
-    public LobbyController(GameService gameService, ILobbyView lobbyView)
+    private readonly ILobbyView lobbyView;
+    private readonly IHeroDataRepository heroDataRepository;
+    private readonly IStageDataRepository stageDataRepository;
+
+    public LobbyController(GameService gameService, ILobbyView lobbyView, IHeroDataRepository heroRepository, IStageDataRepository stageRepository)
     {
         this.gameService = gameService;
         this.lobbyView = lobbyView;
+        heroDataRepository = heroRepository;
+        stageDataRepository = stageRepository;
     }
 
-    public void Initialize()
+    public async Task InitializeAsync()
     {
         lobbyView.Show();
 
-        LoadState();
+        await LoadStateAsync();
 
         BindButtons();
     }
@@ -42,11 +48,17 @@ public sealed class LobbyController
 
     }
 
-    private void LoadState()
+    private async Task LoadStateAsync()
     {
         PlayerSaveData playerSaveData = gameService.SaveService.CurrentSaveData;
 
-        lobbyView.SetHeroName(playerSaveData.selectedHeroID);
-        lobbyView.SetStageName(playerSaveData.selectedStageID);
+        Debug.Log(playerSaveData.selectedHeroID);
+        Debug.Log(playerSaveData.selectedStageID);
+
+        HeroSO heroSO = await heroDataRepository.LoadAsync(playerSaveData.selectedHeroID);
+        lobbyView.SetHeroName(heroSO.DisplayName);
+
+        StageSO stageSO = await stageDataRepository.LoadAsync(playerSaveData.selectedStageID);
+        lobbyView.SetStageName(stageSO.DisplayName);
     }
 }

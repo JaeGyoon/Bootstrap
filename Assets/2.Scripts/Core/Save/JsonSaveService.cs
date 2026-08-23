@@ -40,7 +40,11 @@ public class JsonSaveService : ISaveService
     {
         Debug.Log("첫 세이브 데이터 생성!");
 
-        return new PlayerSaveData();
+        return new PlayerSaveData
+        {
+            selectedHeroID = "Warrior",
+            selectedStageID = "Stage1"
+        };
     }
 
     public PlayerSaveData GetData()

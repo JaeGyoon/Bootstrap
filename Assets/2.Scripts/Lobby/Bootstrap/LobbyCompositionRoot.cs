@@ -5,8 +5,10 @@ public class LobbyCompositionRoot
 {
     private const string LobbyViewAddressableKey = "LobbyView";
 
-    private GameService gameService;
+    private readonly GameService gameService;
     private LobbyController lobbyController;
+    private IHeroDataRepository heroDataRepository;
+    private IStageDataRepository stageRepository;
 
     public LobbyCompositionRoot(GameService gameService)
     {
@@ -15,11 +17,13 @@ public class LobbyCompositionRoot
 
     public async Task InitializeAsync()
     {
+        CreateRepositories();
+
         LobbyView lobbyView = await CreateLobbyViewAsync();
 
-        lobbyController = new LobbyController(gameService, lobbyView);
+        lobbyController = new LobbyController(gameService, lobbyView, heroDataRepository, stageRepository);
 
-        lobbyController.Initialize();
+        await lobbyController.InitializeAsync();
     }
 
     private async Task<LobbyView> CreateLobbyViewAsync()
@@ -34,5 +38,11 @@ public class LobbyCompositionRoot
         }
 
         return lobbyView;
+    }
+
+    private void CreateRepositories()
+    {
+        heroDataRepository = new HeroDataRepository(gameService.AddressableService);
+        stageRepository = new StageDataRepository(gameService.AddressableService);
     }
 }
