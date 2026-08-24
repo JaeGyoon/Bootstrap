@@ -7,8 +7,11 @@ public class LobbyCompositionRoot
 
     private readonly GameService gameService;
     private LobbyController lobbyController;
+
     private IHeroDataRepository heroDataRepository;
     private IStageDataRepository stageRepository;
+
+    private LobbyView lobbyView;
 
     public LobbyCompositionRoot(GameService gameService)
     {
@@ -19,7 +22,7 @@ public class LobbyCompositionRoot
     {
         CreateRepositories();
 
-        LobbyView lobbyView = await CreateLobbyViewAsync();
+        lobbyView = await CreateLobbyViewAsync();
 
         lobbyController = new LobbyController(gameService, lobbyView, heroDataRepository, stageRepository);
 
@@ -44,5 +47,25 @@ public class LobbyCompositionRoot
     {
         heroDataRepository = new HeroDataRepository(gameService.AddressableService);
         stageRepository = new StageDataRepository(gameService.AddressableService);
+    }
+
+    public void Dispose()
+    {
+        heroDataRepository?.ClearCache();
+        stageRepository?.ClearCache();
+
+        if ( lobbyView != null)
+        {
+            gameService.AddressableService.ReleaseInstance(lobbyView.gameObject);
+
+            lobbyView = null;
+        }
+
+
+        lobbyController = null;
+
+
+
+        
     }
 }

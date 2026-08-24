@@ -1,9 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public sealed class HeroDataRepository : IHeroDataRepository
 {
     private readonly IAddressableService addressableService;
+
+    private readonly Dictionary<string, HeroSO> cache = new Dictionary<string, HeroSO>();
 
     public HeroDataRepository(IAddressableService addressable)
     {
@@ -11,9 +14,26 @@ public sealed class HeroDataRepository : IHeroDataRepository
     }
 
     public async Task<HeroSO> LoadAsync(string id)
-    {
-        HeroSO so = await addressableService.LoadAssetAsync<HeroSO>(id);
+    {        
+        if (cache.TryGetValue(id, out HeroSO cacheData))
+        {
+            return cacheData;
+        }
 
-        return so;
+        HeroSO data = await addressableService.LoadAssetAsync<HeroSO>(id);
+
+        cache.Add(id, data);
+
+        return data;
+    }
+
+    public void ClearCache()
+    {
+        foreach (HeroSO data in cache.Values)
+        {
+            addressableService.Release(data);
+        }
+
+        cache.Clear();
     }
 }

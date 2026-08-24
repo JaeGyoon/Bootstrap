@@ -3,4 +3,6 @@
 public interface IHeroDataRepository 
 {
     Task<HeroSO> LoadAsync(string id);
+
+    void ClearCache();
 }
