@@ -20,6 +20,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5ccf9a25aa7ccf44e83ebace41ee28ce
+    m_Address: HeroCatalog
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c76bf82037b1934cb7aa1fba5f9123c
+    m_Address: Mage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d2e771d8722771d43aa81afdf7279477, type: 2}
   m_SchemaSet:

@@ -10,4 +10,6 @@ public interface ISaveService
     PlayerSaveData GetData();
 
     Task SaveAsync();
+
+    public void MarkDirty();
 }

@@ -23,6 +23,7 @@ public sealed class GameCompositionRoot
         sceneLoader = new SceneLoader();
     }
 
+
     private async Task InitializeServiceAsync()
     {        
         await addressableService.InitializeAsync();
