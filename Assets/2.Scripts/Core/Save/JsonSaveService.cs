@@ -43,7 +43,7 @@ public class JsonSaveService : ISaveService
         return new PlayerSaveData
         {
             selectedHeroID = "Warrior",
-            selectedStageID = "Stage1"
+            selectedStageID = "Stage001"
         };
     }
 

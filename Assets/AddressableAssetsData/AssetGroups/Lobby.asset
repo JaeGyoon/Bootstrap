@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c3078368b137e844a1834d9e2196f1c
+    m_Address: StageSelectionView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 558bec191bbd0e54e846a410770e129f
     m_Address: HeroSelectionView
     m_ReadOnly: 0

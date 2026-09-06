@@ -4,22 +4,29 @@ using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
 public class LobbyCompositionRoot
-{
+{    
     private const string LobbyViewAddressableKey = "LobbyView";
+
     private const string HeroCatalogAddressableKey = "HeroCatalog";
     private const string HeroSelectionViewAddressableKey = "HeroSelectionView";
 
+    private const string StageCatalogAddressableKey = "StageCatalog";
+    private const string StageSelectionViewAddressableKey = "StageSelectionView";
+
     private readonly GameService gameService;
+
+    private IHeroDataRepository heroDataRepository;
+    private IStageDataRepository stageDataRepository;
 
     private LobbyController lobbyController;
     private HeroSelectionController heroSelectionController;
     private HeroCatalogSO HeroCatalogSO;
-
-    private IHeroDataRepository heroDataRepository;
-    private IStageDataRepository stageRepository;
+    private StageSelectionController StageSelectionController;
+    private StageCatalogSO StageCatalogSO;
 
     private LobbyView lobbyView;
     private HeroSelectionView heroSelectionView;
+    private StageSelectionView stageSelectionView;
 
     public LobbyCompositionRoot(GameService gameService)
     {
@@ -32,17 +39,18 @@ public class LobbyCompositionRoot
 
         lobbyView = await CreateLobbyViewAsync();
 
-        lobbyController = new LobbyController(gameService, lobbyView, heroDataRepository, stageRepository);
+        lobbyController = new LobbyController(gameService, lobbyView, heroDataRepository, stageDataRepository);
 
         await lobbyController.InitializeAsync();
 
         await InitializeHeroSelectionAsync();
+        await InitializeStageSelectionAsync();
+
     }
 
     private async Task<LobbyView> CreateLobbyViewAsync()
     {
         GameObject viewObject = await gameService.AddressableService.InstantiateAsync(LobbyViewAddressableKey);
-
         LobbyView lobbyView = viewObject.GetComponent<LobbyView>();
 
         if (lobbyView == null)
@@ -56,13 +64,13 @@ public class LobbyCompositionRoot
     private void CreateRepositories()
     {
         heroDataRepository = new HeroDataRepository(gameService.AddressableService);
-        stageRepository = new StageDataRepository(gameService.AddressableService);
+        stageDataRepository = new StageDataRepository(gameService.AddressableService);
     }
 
     public void Dispose()
     {
         heroDataRepository?.ClearCache();
-        stageRepository?.ClearCache();
+        stageDataRepository?.ClearCache();
 
         if ( lobbyView != null)
         {
@@ -79,14 +87,26 @@ public class LobbyCompositionRoot
         HeroCatalogSO catalogSO = await gameService.AddressableService.LoadAssetAsync<HeroCatalogSO>(HeroCatalogAddressableKey);
         HeroCatalog catalog = new HeroCatalog(catalogSO);
 
-        HeroSelectionView view = await CreateViewAsync();
+        HeroSelectionView view = await CreateHeroSelectionViewAsync();
 
         heroSelectionController = new HeroSelectionController(catalog, heroDataRepository, gameService.SaveService, view);
 
         await heroSelectionController.InitializeAsync();
     }
 
-    private async Task<HeroSelectionView> CreateViewAsync()
+    private async Task InitializeStageSelectionAsync()
+    {
+        StageCatalogSO catalogSO = await gameService.AddressableService.LoadAssetAsync<StageCatalogSO>(StageCatalogAddressableKey);
+        StageCatalog catalog = new StageCatalog(catalogSO);
+
+        StageSelectionView view = await CreateStageSelectionViewAsync();
+
+        StageSelectionController = new StageSelectionController(catalog, stageDataRepository, gameService.SaveService, view);
+
+        await StageSelectionController.InitializeAsync();
+    }
+
+    private async Task<HeroSelectionView> CreateHeroSelectionViewAsync()
     {
         GameObject instance = await gameService.AddressableService.InstantiateAsync(HeroSelectionViewAddressableKey);
 
@@ -99,6 +119,22 @@ public class LobbyCompositionRoot
 
         return view;
     }
+
+    private async Task<StageSelectionView> CreateStageSelectionViewAsync()
+    {
+        GameObject instance = await gameService.AddressableService.InstantiateAsync(StageSelectionViewAddressableKey);
+
+        StageSelectionView view = instance.GetComponent<StageSelectionView>();
+
+        if (view == null)
+        {
+            Debug.Log("뷰가 없음");
+        }
+
+        return view;
+    }
+
+
 
 
 }
