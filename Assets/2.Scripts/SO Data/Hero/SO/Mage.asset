@@ -15,4 +15,4 @@ MonoBehaviour:
   id: Mage
   displayName: "\uB9C8\uBC95\uC0AC"
   description: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 1b377990f17040948b6450eb367704af, type: 3}

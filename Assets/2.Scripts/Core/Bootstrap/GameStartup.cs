@@ -4,7 +4,7 @@ using UnityEngine;
 public sealed class GameStartup
 {
     private readonly GameCompositionRoot gameCompositionRoot;
-    private LobbyCompositionRoot lobbyCompositionRoot;
+    //private LobbyCompositionRoot lobbyCompositionRoot;
     
 
     public GameStartup()

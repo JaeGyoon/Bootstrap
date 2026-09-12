@@ -30,14 +30,18 @@ public sealed class HeroSelectionController
             loadedHeros.Add(so);
         }
 
+        BindEvents();
+
         heroSelectionView.ShowHeros(loadedHeros, saveService.CurrentSaveData.selectedHeroID);
 
-        BindEvents();
+        
     }
 
     private void BindEvents()
     {
         heroSelectionView.SetHeroSelectedAction(OnHeroSelected);
+
+        Debug.Log("바인딩 이벤트");
     }
 
     private void OnHeroSelected(string heroID)
@@ -47,5 +51,7 @@ public sealed class HeroSelectionController
         saveService.MarkDirty();
 
         heroSelectionView.SetSelectedHero(heroID);
+
+        Debug.Log(saveService.CurrentSaveData.selectedHeroID);
     }
 }

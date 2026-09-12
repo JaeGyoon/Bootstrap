@@ -6,22 +6,51 @@ public class HeroSelectionView : MonoBehaviour, IHeroSelectionView
 {
     private Action<string> heroSelectedAction;
 
+    [SerializeField] private HeroSelectionEntryView entryView;
+    [SerializeField] private Transform entryRoot;
+
+    private readonly List<HeroSelectionEntryView> entries = new List<HeroSelectionEntryView>();
+
     public void ShowHeros(IReadOnlyList<HeroSO> heros, string selectedHeroID)
     {
-        foreach( HeroSO hero in heros )
+        ClearEntries();
+
+        foreach ( HeroSO hero in heros )
         {
-            CreateHeroEntry(hero, hero.ID == selectedHeroID);
+            CreateHeroEntry(hero, selectedHeroID);
         }
     }
 
-    private void CreateHeroEntry(HeroSO hero, bool isSelected)
+    private void ClearEntries()
     {
+        foreach(HeroSelectionEntryView entry in entries)
+        {
+            if ( entry != null )
+            {
+                Destroy(entry.gameObject);
+            }
+        }
 
+        entries.Clear();
+    }
+
+    private void CreateHeroEntry(HeroSO heroSO, string selectedHeroID)
+    {
+        HeroSelectionEntryView entry = Instantiate(entryView, entryRoot);
+
+        entry.gameObject.SetActive(true);
+
+        entry.Initialize(heroSO, heroSO.ID == selectedHeroID, heroSelectedAction);
+
+        entries.Add(entry);
     }
 
     public void SetSelectedHero(string heroID)
     {
-
+        foreach (HeroSelectionEntryView entry in entries)
+        {
+            entry.SetSelected(entry.heroID == heroID);
+        }
     }
 
     public void SetHeroSelectedAction(Action<string> callback)
@@ -33,4 +62,6 @@ public class HeroSelectionView : MonoBehaviour, IHeroSelectionView
     {
         heroSelectedAction?.Invoke(heroID);
     }
+
+    
 }

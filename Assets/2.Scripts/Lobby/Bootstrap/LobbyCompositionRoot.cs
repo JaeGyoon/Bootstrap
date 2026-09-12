@@ -25,8 +25,8 @@ public class LobbyCompositionRoot
     private StageCatalogSO StageCatalogSO;
 
     private LobbyView lobbyView;
-    private HeroSelectionView heroSelectionView;
-    private StageSelectionView stageSelectionView;
+    private GameObject heroSelectionView;
+    private GameObject stageSelectionView;
 
     public LobbyCompositionRoot(GameService gameService)
     {
@@ -80,6 +80,16 @@ public class LobbyCompositionRoot
         }
 
         lobbyController = null;
+
+        gameService.AddressableService.ReleaseInstance(heroSelectionView);
+        heroSelectionView = null;
+        gameService.AddressableService.Release(HeroCatalogSO);
+        HeroCatalogSO = null;
+
+        gameService.AddressableService.ReleaseInstance(stageSelectionView);
+        stageSelectionView = null;
+        gameService.AddressableService.Release(StageCatalogSO);
+        StageCatalogSO = null;
     }
 
     private async Task InitializeHeroSelectionAsync()
@@ -108,9 +118,9 @@ public class LobbyCompositionRoot
 
     private async Task<HeroSelectionView> CreateHeroSelectionViewAsync()
     {
-        GameObject instance = await gameService.AddressableService.InstantiateAsync(HeroSelectionViewAddressableKey);
+        heroSelectionView = await gameService.AddressableService.InstantiateAsync(HeroSelectionViewAddressableKey);
 
-        HeroSelectionView view = instance.GetComponent<HeroSelectionView>();
+        HeroSelectionView view = heroSelectionView.GetComponent<HeroSelectionView>();
 
         if (view == null)
         {
@@ -122,9 +132,9 @@ public class LobbyCompositionRoot
 
     private async Task<StageSelectionView> CreateStageSelectionViewAsync()
     {
-        GameObject instance = await gameService.AddressableService.InstantiateAsync(StageSelectionViewAddressableKey);
+        stageSelectionView = await gameService.AddressableService.InstantiateAsync(StageSelectionViewAddressableKey);
 
-        StageSelectionView view = instance.GetComponent<StageSelectionView>();
+        StageSelectionView view = stageSelectionView.GetComponent<StageSelectionView>();
 
         if (view == null)
         {
@@ -133,7 +143,6 @@ public class LobbyCompositionRoot
 
         return view;
     }
-
 
 
 

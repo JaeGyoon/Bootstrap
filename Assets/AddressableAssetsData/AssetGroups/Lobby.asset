@@ -25,7 +25,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 558bec191bbd0e54e846a410770e129f
+  - m_GUID: 5f5331e3a7f54de429b0b17a187d8091
     m_Address: HeroSelectionView
     m_ReadOnly: 0
     m_SerializedLabels: []
