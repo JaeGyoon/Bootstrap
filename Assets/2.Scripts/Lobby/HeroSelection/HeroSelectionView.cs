@@ -49,7 +49,7 @@ public class HeroSelectionView : MonoBehaviour, IHeroSelectionView
     {
         foreach (HeroSelectionEntryView entry in entries)
         {
-            entry.SetSelected(entry.heroID == heroID);
+            entry.SetSelected(entry.HeroID == heroID);
         }
     }
 

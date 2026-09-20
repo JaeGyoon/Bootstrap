@@ -9,8 +9,10 @@ public class HeroSelectionEntryView : MonoBehaviour
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI heroNameText;
 
-    public string heroID;
+    private string heroID;
     private Action<string> onSelected;
+
+    public string HeroID => heroID;
 
     public void Initialize(HeroSO heroSO, bool isSelected, Action<string> onSelected)
     {

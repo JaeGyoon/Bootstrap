@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IStageSelectionView
 {
-    void ShowStages(IReadOnlyList<StageSO> heros, string selectedStageID);
+    void ShowStages(IReadOnlyList<StageSO> heros, string selectedStageID, IReadOnlyList<bool> unlockedStates);
 
     void SetSelectedStage(string stageID);
 

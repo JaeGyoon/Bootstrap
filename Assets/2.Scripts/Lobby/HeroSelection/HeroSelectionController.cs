@@ -52,6 +52,6 @@ public sealed class HeroSelectionController
 
         heroSelectionView.SetSelectedHero(heroID);
 
-        Debug.Log(saveService.CurrentSaveData.selectedHeroID);
+        Debug.Log($"선택된 영웅 : {saveService.CurrentSaveData.selectedHeroID}");
     }
 }

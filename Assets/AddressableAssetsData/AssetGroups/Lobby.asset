@@ -20,13 +20,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3c3078368b137e844a1834d9e2196f1c
-    m_Address: StageSelectionView
+  - m_GUID: 5f5331e3a7f54de429b0b17a187d8091
+    m_Address: HeroSelectionView
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5f5331e3a7f54de429b0b17a187d8091
-    m_Address: HeroSelectionView
+  - m_GUID: ab9359a60a9c8f142872c6a3236332ed
+    m_Address: StageSelectionView
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
