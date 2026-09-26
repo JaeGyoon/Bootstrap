@@ -54,6 +54,8 @@ MonoBehaviour:
   stageNameText: {fileID: 7337307056113335898}
   lockedText: {fileID: 0}
   stageID: 
+  isSelected: 0
+  isUnlocked: 0
 --- !u!1 &3161320136224811838
 GameObject:
   m_ObjectHideFlags: 0

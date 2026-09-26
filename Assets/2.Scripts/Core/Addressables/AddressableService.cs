@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class AddressableService : IAddressableService
+public class AddressableService : IAddressableService, IDisposable
 {
     public async Task InitializeAsync()
     {
@@ -12,7 +13,7 @@ public class AddressableService : IAddressableService
         await handle.Task;
     }
 
-    public async Task<T> LoadAssetAsync<T>(string key) where T : Object
+    public async Task<T> LoadAssetAsync<T>(string key) where T : UnityEngine.Object
     {
         AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(key);
 
@@ -32,7 +33,7 @@ public class AddressableService : IAddressableService
         return instance;
     }    
 
-    public void Release<T>(T asset) where T : Object
+    public void Release<T>(T asset) where T : UnityEngine.Object
     {
         if ( asset == null )
         {
@@ -52,4 +53,8 @@ public class AddressableService : IAddressableService
         Addressables.ReleaseInstance(instance);
     }
     
+    public void Dispose()
+    {
+
+    }
 }

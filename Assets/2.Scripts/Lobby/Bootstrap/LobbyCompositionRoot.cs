@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
 public class LobbyCompositionRoot
-{    
-    private const string LobbyViewAddressableKey = "LobbyView";
+{
+
+    //private const string LobbyViewAddressableKey = "LobbyView";
 
     private const string HeroCatalogAddressableKey = "HeroCatalog";
     private const string HeroSelectionViewAddressableKey = "HeroSelectionView";
@@ -18,54 +19,41 @@ public class LobbyCompositionRoot
     private IHeroDataRepository heroDataRepository;
     private IStageDataRepository stageDataRepository;
 
+    private readonly Transform canvasTransform;
     private LobbyController lobbyController;
+    private LobbyView lobbyView;
+
     private HeroSelectionController heroSelectionController;
     private HeroCatalogSO HeroCatalogSO;
+    private GameObject heroSelectionView;
+
     private StageSelectionController StageSelectionController;
     private StageCatalogSO StageCatalogSO;
-
-    private LobbyView lobbyView;
-    private GameObject heroSelectionView;
     private GameObject stageSelectionView;
 
-    public LobbyCompositionRoot(GameService gameService)
+    public LobbyCompositionRoot(GameService gameService, IHeroDataRepository hero, IStageDataRepository stage, Transform canvas, LobbyView lobbyView)
     {
         this.gameService = gameService;
+        heroDataRepository = hero;
+        stageDataRepository = stage;
+        canvasTransform = canvas;
+        this.lobbyView = lobbyView;
     }
 
     public async Task InitializeAsync()
     {
-        CreateRepositories();
-
-        lobbyView = await CreateLobbyViewAsync();
-
-        lobbyController = new LobbyController(gameService, lobbyView, heroDataRepository, stageDataRepository);
-
-        await lobbyController.InitializeAsync();
-
         await InitializeHeroSelectionAsync();
         await InitializeStageSelectionAsync();
 
+        lobbyController = new LobbyController(gameService, heroDataRepository, stageDataRepository,lobbyView, heroSelectionView, stageSelectionView);
+
+        await lobbyController.InitializeAsync();
+
+        
+
     }
 
-    private async Task<LobbyView> CreateLobbyViewAsync()
-    {
-        GameObject viewObject = await gameService.AddressableService.InstantiateAsync(LobbyViewAddressableKey);
-        LobbyView lobbyView = viewObject.GetComponent<LobbyView>();
 
-        if (lobbyView == null)
-        {
-            Debug.Log("로비 뷰 어드레서블 확인 필요");
-        }
-
-        return lobbyView;
-    }
-
-    private void CreateRepositories()
-    {
-        heroDataRepository = new HeroDataRepository(gameService.AddressableService);
-        stageDataRepository = new StageDataRepository(gameService.AddressableService);
-    }
 
     public void Dispose()
     {
@@ -102,6 +90,8 @@ public class LobbyCompositionRoot
         heroSelectionController = new HeroSelectionController(catalog, heroDataRepository, gameService.SaveService, view);
 
         await heroSelectionController.InitializeAsync();
+
+        
     }
 
     private async Task InitializeStageSelectionAsync()
@@ -127,6 +117,9 @@ public class LobbyCompositionRoot
             Debug.Log("뷰가 없음");
         }
 
+        heroSelectionView.transform.SetParent(canvasTransform, false);
+        heroSelectionView.SetActive(false);
+        
         return view;
     }
 
@@ -140,6 +133,9 @@ public class LobbyCompositionRoot
         {
             Debug.Log("뷰가 없음");
         }
+
+        stageSelectionView.transform.SetParent(canvasTransform, false);
+        stageSelectionView.SetActive(false);
 
         return view;
     }

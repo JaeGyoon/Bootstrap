@@ -9,21 +9,30 @@ public sealed class LobbyController
     private readonly IHeroDataRepository heroDataRepository;
     private readonly IStageDataRepository stageDataRepository;
 
-    public LobbyController(GameService gameService, ILobbyView lobbyView, IHeroDataRepository heroRepository, IStageDataRepository stageRepository)
+    private readonly GameObject heroSelectionObject;
+    private readonly GameObject stageSelectionObject;
+
+    public LobbyController(GameService gameService,
+        IHeroDataRepository heroDataRepository,
+        IStageDataRepository stageDataRepository,
+        ILobbyView lobbyView, GameObject heroSelect,
+        GameObject stageSelect)
     {
         this.gameService = gameService;
+        this.heroDataRepository = heroDataRepository;
+        this.stageDataRepository = stageDataRepository;
         this.lobbyView = lobbyView;
-        heroDataRepository = heroRepository;
-        stageDataRepository = stageRepository;
+        heroSelectionObject = heroSelect;
+        stageSelectionObject = stageSelect;
     }
 
     public async Task InitializeAsync()
     {
+        BindButtons();
+
         lobbyView.Show();
 
         await LoadStateAsync();
-
-        BindButtons();
     }
 
     private void BindButtons()
@@ -39,13 +48,15 @@ public sealed class LobbyController
     }
 
     private void OnHeroSelectBtnClicked()
-    {
-
+    {        
+        heroSelectionObject.SetActive(true);
+        stageSelectionObject.SetActive(false);
     }
 
     private void OnStageSelectBtnClicked()
-    {
-
+    {        
+        heroSelectionObject.SetActive(false);
+        stageSelectionObject.SetActive(true);
     }
 
     private async Task LoadStateAsync()

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public sealed class GameService
 {
@@ -11,5 +12,23 @@ public sealed class GameService
         AddressableService = addressable;
         SaveService = save;
         sceneLoader = scene;
+    }
+
+    public void Dispose()
+    {
+        if ( SaveService is IDisposable save)
+        {
+            save.Dispose();
+        }
+
+        if (AddressableService is IDisposable addressable)
+        {
+            addressable.Dispose();
+        }
+
+        if (sceneLoader is IDisposable scener)
+        {
+            scener.Dispose();
+        }
     }
 }

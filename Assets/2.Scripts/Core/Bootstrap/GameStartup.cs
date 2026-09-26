@@ -3,32 +3,38 @@ using UnityEngine;
 
 public sealed class GameStartup
 {
-    private readonly GameCompositionRoot gameCompositionRoot;
-    //private LobbyCompositionRoot lobbyCompositionRoot;
+    private GameCompositionRoot gameCompositionRoot;
+    private LobbyCompositionRoot lobbyCompositionRoot;
     
-
-    public GameStartup()
-    {
-        gameCompositionRoot = new GameCompositionRoot();
-    }
-
     public async Task StartAsync()
     {
-        GameService gameService = await gameCompositionRoot.InitializeAsync();
+        gameCompositionRoot = new GameCompositionRoot();
+        await gameCompositionRoot.InitializeAsync();
 
-        await StartLobbyAsync(gameService);
-    }
+        await gameCompositionRoot.GameService.sceneLoader.LoadSceneAsync(SceneName.Lobby);
 
-    private async Task StartLobbyAsync(GameService gameService)
-    {
-        await gameService.sceneLoader.LoadSceneAsync(SceneName.Lobby);
+        Debug.Log("Lobby Scene 이동");
 
-        Debug.Log("씬 이동 후 lobby Root 설정");
+        LobbySceneRoot lobbySceneRoot = UnityEngine.Object.FindFirstObjectByType<LobbySceneRoot>();
 
-        LobbyCompositionRoot lobbyCompositionRoot = new LobbyCompositionRoot(gameService);
+        LobbyView lobbyView = lobbySceneRoot.GetComponentInChildren<LobbyView>();
+
+        lobbyCompositionRoot = new LobbyCompositionRoot(
+            gameCompositionRoot.GameService,
+            gameCompositionRoot.HeroDataRepository,
+            gameCompositionRoot.StageDataRepository,
+            lobbySceneRoot.CanvasTransform,
+            lobbyView);
 
         await lobbyCompositionRoot.InitializeAsync();
+    }
 
-        Debug.Log("씬 이동 후 lobby Root 설정 완료");
+    public void Dispose()
+    {
+        lobbyCompositionRoot?.Dispose();
+        gameCompositionRoot?.Dispose();
+
+        lobbyCompositionRoot = null;
+        gameCompositionRoot = null;
     }
 }
